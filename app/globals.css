@@ -1,26 +1,583 @@
 @import "tailwindcss";
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "swiper/css";
+@import "swiper/css/navigation";
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0c0e;
+  --background-soft: #111111;
+  --panel: #14161a;
+  --panel-2: #1a1d22;
+  --gold: #b4802c;
+  --gold-soft: #f8e07c;
+  --text: #f6f3ee;
+  --muted: #a7a29a;
+  --border: rgba(180, 128, 44, 0.28);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background:
+    radial-gradient(circle at top, rgba(180, 128, 44, 0.08), transparent 28%),
+    linear-gradient(to bottom, #0b0c0e, #111111);
+  color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.02em;
+}
+
+.container-luxury {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 3vw, 3.5rem);
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+.section-kicker {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+}
+
+.luxury-card {
+  background: linear-gradient(180deg, rgba(20, 22, 26, 0.95), rgba(11, 12, 14, 0.95));
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.luxury-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(248, 224, 124, 0.45);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+}
+
+.gold-button {
+  background: var(--gold);
+  color: #090909;
+  border-radius: 999px;
+  padding: 0.9rem 1.3rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.gold-button:hover {
+  background: var(--gold-soft);
+}
+
+.outline-button {
+  border: 1px solid rgba(248, 224, 124, 0.45);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.9rem 1.3rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.outline-button:hover {
+  border-color: var(--gold-soft);
+  color: var(--gold-soft);
+  background: rgba(248, 224, 124, 0.04);
+}
+.rolex-float {
+  animation: floatWatch 6s ease-in-out infinite;
+}
+
+.particle {
+  animation: particleMove linear infinite;
+}
+
+@keyframes floatWatch {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes particleMove {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-16px) translateX(8px);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.15;
+  }
+}
+.rolex-float {
+  animation: floatWatch 4.5s ease-in-out infinite;
+}
+
+
+.particle-hero {
+  animation-name: particleHeroMove;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes floatWatch {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-1.2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes floatWatchSlow {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg) scale(1.02);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes particleHeroMove {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateY(-26px) translateX(10px) scale(1.45);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+}
+.rolex-float {
+  animation: floatWatch 4.5s ease-in-out infinite;
+}
+
+.particle-hero {
+  animation-name: particleHeroMove;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transition: left 0.18s ease, top 0.18s ease;
+  will-change: transform;
+}
+@keyframes floatWatch {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-1.2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes particleHeroMove {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateY(-26px) translateX(10px) scale(1.45);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+}
+.rolex-float {
+  animation: floatWatch 4.5s ease-in-out infinite;
+}
+
+.particle-hero {
+  animation-name: particleHeroMove;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transition: left 0.18s ease, top 0.18s ease;
+  will-change: transform;
+}
+
+@keyframes floatWatch {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes particleHeroMove {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateY(-26px) translateX(10px) scale(1.45);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.18;
+  }
+}.center-watch-slow {
+  animation: centerWatchFloatSlow 4s ease-in-out infinite;
+}
+
+.center-watch-glow {
+  background: radial-gradient(
+    circle,
+    rgba(180, 128, 44, 0.16) 0%,
+    rgba(248, 224, 124, 0.08) 35%,
+    transparent 70%
+  );
+  filter: blur(42px);
+}
+
+.showcase-watch {
+  animation: smallWatchFloat 7s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.watch-rotate-a {
+  animation:
+    smallWatchFloat 7s ease-in-out infinite,
+    slowRotateA 18s linear infinite;
+}
+
+.watch-rotate-b {
+  animation:
+    smallWatchFloat 8s ease-in-out infinite,
+    slowRotateB 22s linear infinite;
+}
+
+.watch-rotate-c {
+  animation:
+    smallWatchFloat 7.5s ease-in-out infinite,
+    slowRotateA 20s linear infinite;
+}
+
+.watch-rotate-d {
+  animation:
+    smallWatchFloat 8.5s ease-in-out infinite,
+    slowRotateB 24s linear infinite;
+}
+
+.floating-card {
+  position: absolute;
+  width: 300px;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  z-index: 10;
+}
+
+.floating-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(248, 224, 124, 0.28);
+  box-shadow: 0 24px 60px rgba(180, 128, 44, 0.08);
+}
+
+.showcase-card-left-top {
+  left: 50px;
+  top: 40px;
+  animation: floatCardA 8s ease-in-out infinite;
+}
+
+.showcase-card-left-bottom {
+  left: 110px;
+  top: 430px;
+  animation: floatCardB 9s ease-in-out infinite;
+}
+
+.showcase-card-right-top {
+  right: 50px;
+  top: 40px;
+  animation: floatCardB 8.5s ease-in-out infinite;
+}
+
+.showcase-card-right-bottom {
+  right: 110px;
+  top: 430px;
+  animation: floatCardA 9.5s ease-in-out infinite;
+}
+
+.space-particle {
+  position: absolute;
+  border-radius: 9999px;
+  background: rgba(248, 224, 124, 0.24);
+  box-shadow: 0 0 12px rgba(248, 224, 124, 0.25);
+  animation-name: driftParticle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes centerWatchFloatSlow {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(0.8deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes smallWatchFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slowRotateA {
+  0% {
+    rotate: -4deg;
+  }
+  50% {
+    rotate: 4deg;
+  }
+  100% {
+    rotate: -4deg;
+  }
+}
+
+@keyframes slowRotateB {
+  0% {
+    rotate: 3deg;
+  }
+  50% {
+    rotate: -3deg;
+  }
+  100% {
+    rotate: 3deg;
+  }
+}
+
+@keyframes floatCardA {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes floatCardB {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes driftParticle {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px) scale(1.35);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.15;
+  }
+}
+
+@media (max-width: 1279px) {
+  .floating-card {
+    width: 200px;
+  }
+
+  .showcase-card-left-top {
+    left: 10px;
+  }
+
+  .showcase-card-left-bottom {
+    left: 20px;
+  }
+
+  .showcase-card-right-top {
+    right: 10px;
+  }
+
+  .showcase-card-right-bottom {
+    right: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .floating-card {
+    position: relative;
+    width: 100%;
+    left: auto;
+    right: auto;
+    top: auto;
+    animation: none;
+  }
+
+  .showcase-card-left-top,
+  .showcase-card-left-bottom,
+  .showcase-card-right-top,
+  .showcase-card-right-bottom {
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+}
+.reveal-delay-1 {
+  transition-delay: 0.08s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.32s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.44s;
+}
+.particle-hero {
+  animation-name: particleHeroMove;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transition: left 0.18s ease, top 0.18s ease;
+  will-change: transform, opacity;
+}
+
+@keyframes particleHeroMove {
+  0% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(-14px) scale(1.18);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.55;
+  }
+}
+
+.rolex-float {
+  animation: floatWatch 6s ease-in-out infinite;
+}
+
+@keyframes floatWatch {
+  0% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+}
+
+.hero-watch-shell {
+  position: relative;
+}
+
+.hero-watch-reflection {
+  position: absolute;
+  inset: 12% 20% 12% 20%;
+  z-index: 5;
+  border-radius: 9999px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(255, 255, 255, 0.22) 28%,
+    rgba(255, 255, 255, 0.05) 38%,
+    transparent 54%
+  );
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: reflectionSweep 7s ease-in-out infinite;
+}
+
+@keyframes reflectionSweep {
+  0% {
+    transform: translateX(-22px) rotate(-8deg);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateX(18px) rotate(3deg);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(-22px) rotate(-8deg);
+    opacity: 0.25;
+  }
+}
+
+.hero-watch-shine {
+  position: absolute;
+  inset: -6%;
+  z-index: 6;
+  border-radius: 9999px;
+  filter: blur(24px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+@media (max-width: 1024px) {
+  .hero-watch-reflection,
+  .hero-watch-shine {
+    display: none;
+  }
 }
