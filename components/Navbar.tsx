@@ -8,10 +8,10 @@ const FEATURED_BRANDS = [
   { key: "rolex", label: "Rolex", accent: "#c0a050", desc: "Crown of horology" },
   { key: "omega", label: "Omega", accent: "#7a9bb5", desc: "Master of time" },
   { key: "breitling", label: "Breitling", accent: "#d4a843", desc: "Born for the skies" },
+  { key: "audemars piguet", label: "Audemars Piguet", accent: "#b88a5a", desc: "Icon of prestige" },
 ];
 
 const MORE_BRANDS = [
-  { key: "audemars piguet", label: "Audemars Piguet" },
   { key: "patek philippe", label: "Patek Philippe" },
   { key: "iwc", label: "IWC" },
   { key: "tag heuer", label: "TAG Heuer" },
@@ -70,7 +70,7 @@ function BrandsMegaMenu({ open, onClose }: { open: boolean; onClose: () => void 
         style={{
           background: "rgba(11,12,14,0.98)",
           border: "1px solid rgba(180,128,44,0.22)",
-          minWidth: 540,
+          minWidth: 560,
         }}
       >
         <div className="h-px bg-gradient-to-r from-transparent via-[rgba(248,224,124,0.35)] to-transparent" />
@@ -82,16 +82,9 @@ function BrandsMegaMenu({ open, onClose }: { open: boolean; onClose: () => void 
                 Browse by Brand
               </p>
               <p className="mt-0.5 text-[0.68rem] text-[var(--muted)] opacity-55">
-                Select a manufacturer to explore their collection
+                Explore by brand, model family, or reference
               </p>
             </div>
-            <Link
-              href="/catalogo"
-              onClick={onClose}
-              className="rounded-full border border-[rgba(248,224,124,0.22)] px-3.5 py-1.5 text-[0.65rem] uppercase tracking-[0.16em] text-[var(--gold)] transition hover:border-[var(--gold-soft)] hover:text-[var(--gold-soft)]"
-            >
-              View All
-            </Link>
           </div>
 
           <div className="mb-5 flex items-center gap-[3px]">
@@ -228,7 +221,9 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (searchOpen) searchRef.current?.focus();
+    if (searchOpen) {
+      setTimeout(() => searchRef.current?.focus(), 120);
+    }
   }, [searchOpen]);
 
   useEffect(() => {
@@ -267,7 +262,11 @@ export default function Navbar() {
         }}
       >
         <div className="container-luxury flex h-[64px] items-center justify-between gap-3 sm:h-[68px] sm:gap-6">
-          <Link href="/" className="group flex min-w-0 flex-shrink items-center gap-2 sm:gap-3" onClick={() => setDrawerOpen(false)}>
+          <Link
+            href="/"
+            className="group flex min-w-0 flex-shrink items-center gap-2 sm:gap-3"
+            onClick={() => setDrawerOpen(false)}
+          >
             <div className="relative shrink-0">
               <img
                 src="/img/logo-jj.png"
@@ -366,7 +365,7 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               aria-label="Search"
-              className="hidden h-9 w-9 items-center justify-center rounded-full border border-[rgba(180,128,44,0.2)] text-[var(--muted)] transition-all duration-200 hover:border-[var(--gold)] hover:text-[var(--gold)] md:flex"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(180,128,44,0.2)] text-[var(--muted)] transition-all duration-200 hover:border-[var(--gold)] hover:text-[var(--gold)]"
               style={{ background: "rgba(255,255,255,0.02)" }}
             >
               {searchOpen ? (
@@ -380,19 +379,6 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
-
-            <Link
-              href="/catalogo"
-              className="hidden items-center gap-2 rounded-full bg-[var(--gold)] px-5 py-2 text-[0.78rem] font-semibold text-black transition-all duration-200 hover:scale-[1.03] hover:bg-[var(--gold-soft)] active:scale-100 md:flex"
-            >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="1" y="1" width="4" height="4" rx="0.5" />
-                <rect x="7" y="1" width="4" height="4" rx="0.5" />
-                <rect x="1" y="7" width="4" height="4" rx="0.5" />
-                <rect x="7" y="7" width="4" height="4" rx="0.5" />
-              </svg>
-              View Catalog
-            </Link>
 
             <button
               onClick={() => setDrawerOpen(!drawerOpen)}
@@ -425,10 +411,14 @@ export default function Navbar() {
 
         <div
           className="overflow-hidden transition-all duration-400"
-          style={{ maxHeight: searchOpen ? "70px" : "0px" }}
+          style={{ maxHeight: searchOpen ? "120px" : "0px" }}
         >
-          <form action="/catalogo" method="GET" className="container-luxury flex items-center gap-3 pb-3">
-            <div className="flex flex-1 items-center gap-2 rounded-full border border-[rgba(180,128,44,0.25)] bg-[rgba(255,255,255,0.03)] px-4 py-2.5 transition-colors focus-within:border-[rgba(180,128,44,0.55)]">
+          <form
+            action="/catalogo"
+            method="GET"
+            className="container-luxury flex flex-col gap-3 pb-3 sm:flex-row sm:items-center"
+          >
+            <div className="flex w-full flex-1 items-center gap-2 rounded-2xl border border-[rgba(180,128,44,0.25)] bg-[rgba(255,255,255,0.03)] px-4 py-3 transition-colors focus-within:border-[rgba(180,128,44,0.55)]">
               <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="rgba(180,128,44,0.6)" strokeWidth="1.8" strokeLinecap="round">
                 <circle cx="6.5" cy="6.5" r="4.5" />
                 <path d="M10 10l3.5 3.5" />
@@ -439,13 +429,13 @@ export default function Navbar() {
                 name="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by brand, model or reference…"
+                placeholder="Search by brand, model, watch name or reference…"
                 className="w-full bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
               />
             </div>
             <button
               type="submit"
-              className="flex-shrink-0 rounded-full bg-[var(--gold)] px-5 py-2.5 text-xs font-semibold text-black transition hover:bg-[var(--gold-soft)]"
+              className="w-full rounded-full bg-[var(--gold)] px-5 py-3 text-xs font-semibold text-black transition hover:bg-[var(--gold-soft)] sm:w-auto sm:flex-shrink-0"
             >
               Search
             </button>
@@ -500,6 +490,30 @@ export default function Navbar() {
           <TickMarkDivider />
         </div>
 
+        <div className="px-4 pb-3">
+          <form action="/catalogo" method="GET" onSubmit={() => setDrawerOpen(false)} className="space-y-3">
+            <div className="flex items-center gap-2 rounded-2xl border border-[rgba(180,128,44,0.25)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+              <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="rgba(180,128,44,0.6)" strokeWidth="1.8" strokeLinecap="round">
+                <circle cx="6.5" cy="6.5" r="4.5" />
+                <path d="M10 10l3.5 3.5" />
+              </svg>
+              <input
+                type="text"
+                name="search"
+                defaultValue={query}
+                placeholder="Search brand, name, model or ref…"
+                className="w-full bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--muted)]"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full rounded-full bg-[var(--gold)] px-5 py-3 text-xs font-semibold text-black transition hover:bg-[var(--gold-soft)]"
+            >
+              Search Catalog
+            </button>
+          </form>
+        </div>
+
         <nav className="flex-1 px-4 pb-2">
           {NAV_LINKS.map((link, i) => {
             const isActive =
@@ -547,7 +561,7 @@ export default function Navbar() {
 
                   <div
                     className="overflow-hidden transition-all duration-300"
-                    style={{ maxHeight: mobileBrandsOpen ? "500px" : "0px" }}
+                    style={{ maxHeight: mobileBrandsOpen ? "560px" : "0px" }}
                   >
                     <div className="mb-2 ml-4 space-y-0.5 rounded-2xl border border-[rgba(180,128,44,0.12)] bg-[rgba(180,128,44,0.03)] p-3">
                       <p className="mb-2 px-2 text-[0.55rem] font-bold uppercase tracking-[0.3em] text-[var(--gold)] opacity-55">
@@ -634,9 +648,6 @@ export default function Navbar() {
         </nav>
 
         <div className="space-y-3 border-t border-[rgba(180,128,44,0.12)] p-5">
-          <Link href="/catalogo" onClick={() => setDrawerOpen(false)} className="gold-button block w-full text-center text-sm">
-            View Catalog
-          </Link>
           <a
             href="https://wa.me/16892671285"
             target="_blank"

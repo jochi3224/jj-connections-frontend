@@ -227,10 +227,7 @@ export default function HeroVideo() {
     [isMobile]
   );
 
-  const rotY = ((mouse.x - 50) / 50) * 10;
-  const rotX = ((50 - mouse.y) / 50) * 7;
-  const tx = ((mouse.x - 50) / 50) * 9;
-  const ty = ((mouse.y - 50) / 50) * 5;
+
 
   return (
     <section
@@ -247,10 +244,6 @@ export default function HeroVideo() {
       onMouseLeave={() => setMouse({ x: 50, y: 50 })}
     >
       <style>{`
-        @keyframes watchFloat {
-          0%,100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(-0.8deg); }
-        }
         @keyframes scanLine {
           0% { top: 8%; opacity: 0; }
           8% { opacity: 1; }
@@ -271,7 +264,6 @@ export default function HeroVideo() {
           50% { opacity: 0.18; }
           100% { transform: translateX(180%) skewX(-18deg); opacity: 0; }
         }
-        .watch-float-hero { animation: watchFloat 7s ease-in-out infinite; }
         .scan-line-hero { animation: scanLine 4.5s ease-in-out 1.8s infinite; }
         .pulse-ring-hero { animation: pulseRing 2.5s ease-out 1.2s infinite; }
         .scroll-pulse { animation: scrollPulse 2s ease-in-out infinite; }
@@ -285,8 +277,8 @@ export default function HeroVideo() {
         </video>
       </div>
 
-      {/* ── Gradients ── */}
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(9,10,12,0.95)_0%,rgba(9,10,12,0.80)_48%,rgba(9,10,12,0.94)_100%)] md:bg-[linear-gradient(135deg,rgba(9,10,12,0.92)_0%,rgba(9,10,12,0.65)_48%,rgba(9,10,12,0.90)_100%)]" />
+      {/* ── Gradients — lado derecho (reloj) aclarado para mayor visibilidad ── */}
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(9,10,12,0.95)_0%,rgba(9,10,12,0.55)_48%,rgba(9,10,12,0.65)_100%)] md:bg-[linear-gradient(135deg,rgba(9,10,12,0.92)_0%,rgba(9,10,12,0.40)_48%,rgba(9,10,12,0.55)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_70%_35%,rgba(180,128,44,0.12),transparent_68%)] md:bg-[radial-gradient(ellipse_55%_65%_at_70%_42%,rgba(180,128,44,0.16),transparent_65%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_45%_at_10%_72%,rgba(248,224,124,0.04),transparent_60%)] md:bg-[radial-gradient(ellipse_45%_45%_at_10%_72%,rgba(248,224,124,0.05),transparent_60%)]" />
 
@@ -361,11 +353,8 @@ export default function HeroVideo() {
           <div
             className="relative z-10"
             style={{
-              transform: isMobile
-                ? "none"
-                : `rotateX(${rotX}deg) rotateY(${rotY}deg) translateX(${tx}px) translateY(${ty}px)`,
+              transform: "none",
               transformStyle: "preserve-3d",
-              transition: "transform 0.18s ease-out",
             }}
           >
             {/* Scan line */}
@@ -387,11 +376,11 @@ export default function HeroVideo() {
               }}
             />
 
-            {/* Watch */}
+            {/* Watch — animación flotante eliminada */}
             <img
               src="/img/rolex-hero.png"
               alt="Luxury watch"
-              className="watch-float-hero relative z-10 mx-auto w-full max-w-[220px] drop-shadow-[0_24px_44px_rgba(0,0,0,0.72)] sm:max-w-[300px] lg:max-w-[460px]"
+              className="relative z-10 mx-auto w-full max-w-[220px] drop-shadow-[0_24px_44px_rgba(0,0,0,0.72)] sm:max-w-[300px] lg:max-w-[460px]"
             />
 
             {/* Depth rings desktop only */}
@@ -561,7 +550,7 @@ export default function HeroVideo() {
           >
             {[
               { value: 500, suffix: "+", label: "Sold" },
-              { value: 6, suffix: "+", label: "Years" },
+              { value: 3, suffix: "+", label: "Years" },
               { value: 100, suffix: "%", label: "Auth." },
             ].map((s, i) => (
               <div

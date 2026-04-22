@@ -4,7 +4,7 @@ export default function OwnersSection() {
   const owners = [
     {
       name: "JJ Gonzalez",
-      role: "Co-Founder",
+      role: "Founder",
       image: "/img/team-jj.jpg",
       note: "A seasoned mechanical engineer whose deep understanding of complex mechanisms drives our rigorous authentication and servicing standards.",
     },

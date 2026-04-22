@@ -13,7 +13,14 @@ type FeaturedCarouselProps = {
 export default function FeaturedCarousel({
   watches,
 }: FeaturedCarouselProps) {
-  const featured = watches.slice(0, 8);
+  const featured = [...watches]
+    .sort((a, b) => {
+      const dateA = new Date((a as any).createdAt || (a as any).publishedAt || 0).getTime();
+      const dateB = new Date((b as any).createdAt || (b as any).publishedAt || 0).getTime();
+      return dateB - dateA;
+    })
+    .slice(0, 8);
+
   const canLoop = featured.length >= 5;
 
   return (
@@ -23,14 +30,19 @@ export default function FeaturedCarousel({
           <p className="section-kicker mb-3">Featured watches</p>
           <h2 className="section-title">Selected highlights</h2>
           <p className="mt-4 max-w-2xl text-[var(--muted)]">
-            A dynamic showcase of standout pieces from the catalog.
+            A dynamic showcase of the most recently published pieces from the catalog.
           </p>
         </div>
 
         <Swiper
           modules={[Navigation, Autoplay]}
           navigation
-          autoplay={{ delay: 2800, disableOnInteraction: false }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          speed={900}
           loop={canLoop}
           spaceBetween={24}
           slidesPerView={1}
@@ -48,7 +60,7 @@ export default function FeaturedCarousel({
                 : "/images/placeholder-watch.jpg";
 
             return (
-              <SwiperSlide key={watch.id}>
+              <SwiperSlide key={watch.documentId || watch.id}>
                 <article className="overflow-hidden rounded-[24px] border border-[rgba(180,128,44,0.22)] bg-[rgba(17,17,17,0.92)]">
                   <div className="aspect-[4/4.4] overflow-hidden bg-[linear-gradient(145deg,#20242a,#101215)]">
                     <img
@@ -64,25 +76,25 @@ export default function FeaturedCarousel({
                       {formatPrice(watch.precio, watch.moneda)}
                     </p>
 
-<div className="mt-4 flex flex-wrap gap-3">
-  <Link
-    href={`/reloj/${watch.documentId || watch.id}`}
-    className="inline-flex rounded-full border border-[rgba(248,224,124,0.28)] px-4 py-2 text-sm text-[var(--text)] transition hover:border-[var(--gold-soft)] hover:text-[var(--gold-soft)]"
-  >
-    View Watch
-  </Link>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <Link
+                        href={`/reloj/${watch.documentId || watch.id}`}
+                        className="inline-flex rounded-full border border-[rgba(248,224,124,0.28)] px-4 py-2 text-sm text-[var(--text)] transition hover:border-[var(--gold-soft)] hover:text-[var(--gold-soft)]"
+                      >
+                        View Watch
+                      </Link>
 
-  <a
-    href={`https://wa.me/168926?text=${encodeURIComponent(
-      `Hello, I'm interested in this watch:\n\n${watch.nombre}\nReference: ${watch.referencia || "N/A"}\nPrice: ${formatPrice(watch.precio, watch.moneda)}`
-    )}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-black transition hover:bg-[var(--gold-soft)]"
-  >
-    WhatsApp
-  </a>
-</div>
+                      <a
+                        href={`https://wa.me/16892671285?text=${encodeURIComponent(
+                          `Hello, I'm interested in this watch:\n\n${watch.nombre}\nReference: ${watch.referencia || "N/A"}\nPrice: ${formatPrice(watch.precio, watch.moneda)}`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-black transition hover:bg-[var(--gold-soft)]"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
                   </div>
                 </article>
               </SwiperSlide>

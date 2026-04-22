@@ -47,9 +47,9 @@ const teamMembers: TeamMember[] = [
 
 const stats = [
   { value: 500, suffix: "+", label: "Watches Sold" },
-  { value: 6, suffix: "+", label: "Years Experience" },
+  { value: 3, suffix: "+", label: "Years Experience" },
   { value: 100, suffix: "%", label: "Authenticated" },
-  { value: 3, suffix: "K+", label: "Happy Clients" },
+  
 ];
 
 // ─── Animated Counter ─────────────────────────────────────────────────────────
@@ -659,16 +659,7 @@ export default function AboutPage() {
               transition: "opacity 0.8s ease 0.5s",
             }}
           >
-            {["✦ Authenticated pieces", "✦ Market-driven guidance", "✦ Private client experience"].map(
-              (item) => (
-                <span
-                  key={item}
-                  className="rounded-full border border-[rgba(180,128,44,0.28)] bg-[rgba(180,128,44,0.06)] px-4 py-2 text-sm text-[var(--gold-soft)]"
-                >
-                  {item}
-                </span>
-              )
-            )}
+        
           </div>
 
           {/* Live clock badge */}
@@ -945,7 +936,7 @@ export default function AboutPage() {
 
               <div className="flex flex-col gap-4 lg:items-end">
                 <a
-                  href="https://wa.me/10000000000"
+                  href="https://wa.me/16892671285"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="gold-button w-full text-center lg:w-auto relative overflow-hidden group"

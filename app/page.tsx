@@ -20,7 +20,6 @@ export default async function Home() {
       <ScrollWatchShowcase />
       <AboutSection />
       <OwnersSection />
-      <ServicesSection />
       <Footer />
     </main>
   );

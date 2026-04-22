@@ -129,9 +129,9 @@ export default function AboutSection() {
 
   const stats = [
     { num: 500, suffix: "+", label: "Watches Sold" },
-    { num: 6, suffix: "+", label: "Years Experience" },
-    { num: 98, suffix: "%", label: "Client Satisfaction" },
-    { num: 40, suffix: "+", label: "Countries Served" },
+    { num: 3, suffix: "+", label: "Years Experience" },
+    { num: 100, suffix: "%", label: "Client Satisfaction" },
+    { num: 200, suffix: "+", label: "QC INSPECTIONS CONDUCTED" },
   ];
 
   return (

@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Mi Catálogo de Relojes",
+  title: "JJ CONNECTIONS",
   description: "Luxury watch catalog powered by Next.js and Strapi",
+  
 };
 
 export default function RootLayout({
