@@ -14,11 +14,7 @@ export default function FeaturedCarousel({
   watches,
 }: FeaturedCarouselProps) {
   const featured = [...watches]
-    .sort((a, b) => {
-      const dateA = new Date((a as any).createdAt || (a as any).publishedAt || 0).getTime();
-      const dateB = new Date((b as any).createdAt || (b as any).publishedAt || 0).getTime();
-      return dateB - dateA;
-    })
+    .sort(() => Math.random() - 0.5)
     .slice(0, 8);
 
   const canLoop = featured.length >= 5;
