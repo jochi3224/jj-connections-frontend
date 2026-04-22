@@ -19,7 +19,6 @@ export default async function Home() {
       <FeaturedCarousel watches={watches} />
       <ScrollWatchShowcase />
       <AboutSection />
-      <OwnersSection />
       <Footer />
     </main>
   );

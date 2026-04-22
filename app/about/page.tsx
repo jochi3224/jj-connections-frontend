@@ -19,7 +19,7 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "JJ Gonzalez",
-    role: "Co-Founder",
+    role: "Founder",
     number: "01",
     image: "/img/team-jj.jpg",
     intro:
