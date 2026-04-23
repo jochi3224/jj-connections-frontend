@@ -37,6 +37,7 @@ export type Watch = {
   galeria?: WatchImage[];
 };
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 function normalizeMediaUrl(url?: string | null) {
   if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -99,16 +100,62 @@ function mapWatch(item: any): Watch {
   };
 }
 
-export async function getWatches(): Promise<Watch[]> {
+// ─── Búsqueda multi-campo ─────────────────────────────────────────────────────
+// Busca en: nombre, referencia, modelo, marca, movimiento, material,
+//           bisel, cristal, diametro, resistencia_agua, color_esfera, tags
+function buildSearchParams(search: string): Record<string, string> {
+  if (!search?.trim()) return {};
+
+  const s = search.trim();
+
+  const fields = [
+    "nombre",
+    "referencia",
+    "modelo",
+    "marca",
+    "movimiento",
+    "material",
+    "bisel",
+    "cristal",
+    "diametro",
+    "resistencia_agua",
+    "color_esfera",
+    "tags",
+  ];
+
+  return Object.fromEntries(
+    fields.map((field, i) => [
+      `filters[$or][${i}][${field}][$containsi]`,
+      s,
+    ])
+  );
+}
+
+// ─── getWatches ───────────────────────────────────────────────────────────────
+export async function getWatches(search = "", brand = ""): Promise<Watch[]> {
   try {
     let page = 1;
     let pageCount = 1;
     const allItems: Watch[] = [];
 
     do {
-      const res = await axios.get(
-        `${API_URL}?populate=*&pagination[page]=${page}&pagination[pageSize]=100`
-      );
+      const params: Record<string, string | number> = {
+        "populate": "*",
+        "pagination[page]": page,
+        "pagination[pageSize]": 100,
+      };
+
+      // Filtro por marca (exacto, case-insensitive)
+      if (brand && brand !== "all") {
+        params["filters[marca][$containsi]"] = brand;
+      }
+
+      // Búsqueda multi-campo
+      if (search?.trim()) {
+        Object.assign(params, buildSearchParams(search));
+      }
+
+      const res = await axios.get(API_URL, { params });
 
       const items = res.data?.data || [];
       const mapped = items
@@ -128,28 +175,35 @@ export async function getWatches(): Promise<Watch[]> {
   }
 }
 
+// ─── getWatchById ─────────────────────────────────────────────────────────────
 export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
   try {
+    // Intenta buscar directamente por documentId primero (más eficiente)
+    try {
+      const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);
+      if (res.data?.data) return mapWatch(res.data.data);
+    } catch {
+      // Si falla (es un id numérico), hace fallback a búsqueda local
+    }
+
     const watches = await getWatches();
-
-    const found =
+    return (
       watches.find(
-        (watch) =>
-          String(watch.id) === String(idOrDocumentId) ||
-          String(watch.documentId || "") === String(idOrDocumentId)
-      ) || null;
-
-    return found;
+        (w) =>
+          String(w.id) === String(idOrDocumentId) ||
+          String(w.documentId || "") === String(idOrDocumentId)
+      ) || null
+    );
   } catch (error) {
     console.error("Error cargando reloj:", error);
     return null;
   }
 }
 
-export function getBrandsFromWatches(watches: Watch[]) {
-  const brands = Array.from(
-    new Set(watches.map((watch) => watch.marca).filter(Boolean))
-  ) as string[];
-
-  return brands.sort((a, b) => a.localeCompare(b));
+// ─── getBrandsFromWatches ─────────────────────────────────────────────────────
+export function getBrandsFromWatches(watches: Watch[]): string[] {
+  return Array.from(git status
+    new Set(watches.map((w) => w.marca).filter(Boolean))
+  )
+    .sort((a, b) => a!.localeCompare(b!)) as string[];
 }
