@@ -202,7 +202,7 @@ export async function getWatchById(idOrDocumentId: string): Promise<Watch | null
 
 // ─── getBrandsFromWatches ─────────────────────────────────────────────────────
 export function getBrandsFromWatches(watches: Watch[]): string[] {
-  return Array.from(git status
+  return Array.from(
     new Set(watches.map((w) => w.marca).filter(Boolean))
   )
     .sort((a, b) => a!.localeCompare(b!)) as string[];
