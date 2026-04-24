@@ -10,7 +10,7 @@ export type WatchImage = {
   alternativeText?: string | null;
 };
 
-// 1. EL MOLDE CORREGIDO: Agregué los campos que te daban error de tipo
+// 1. EL MOLDE TOTAL: Agregamos todos los campos que usa tu componente de detalle
 export type Watch = {
   id: number;
   documentId?: string | null;
@@ -24,11 +24,18 @@ export type Watch = {
   moneda?: string | null;
   activo?: boolean | null;
   featured?: boolean | null; 
-  condicion?: string | null;  // <--- Agregado
-  material?: string | null;   // <--- Agregado
-  diametro?: string | null;   // <--- Agregado
-  movimiento?: string | null; // <--- Agregado
-  tags?: string | null;       // <--- Agregado
+  condicion?: string | null;
+  material?: string | null;
+  diametro?: string | null;
+  movimiento?: string | null;
+  tags?: string | null;
+  // Campos técnicos detectados en tu componente:
+  BraceletMaterial?: string | null;
+  cristal?: string | null;
+  resistencia_agua?: string | null;
+  color_esfera?: string | null;
+  bisel?: string | null;
+  tienda?: string | null;
   galeria?: WatchImage[];
 };
 
@@ -50,7 +57,7 @@ function mapGallery(item: any): WatchImage[] {
     .filter((img: WatchImage) => !!img.url);
 }
 
-// 2. EL TRADUCTOR CORREGIDO: Aquí le decimos a Strapi qué datos meter en cada campo
+// 2. EL TRADUCTOR: Conectamos los datos de Strapi con el molde de arriba
 function mapWatch(item: any): Watch {
   const raw = item?.attributes ? { id: item.id, ...item.attributes } : item;
   return {
@@ -66,11 +73,18 @@ function mapWatch(item: any): Watch {
     moneda: raw.moneda ?? "USD",
     activo: raw.activo ?? true,
     featured: !!raw.featured,
-    condicion: raw.condicion ?? "",   // <--- Mapeado
-    material: raw.material ?? "",     // <--- Mapeado
-    diametro: raw.diametro ?? "",     // <--- Mapeado
-    movimiento: raw.movimiento ?? "", // <--- Mapeado
-    tags: raw.tags ?? "",             // <--- Mapeado
+    condicion: raw.condicion ?? "",
+    material: raw.material ?? "",
+    diametro: raw.diametro ?? "",
+    movimiento: raw.movimiento ?? "",
+    tags: raw.tags ?? "",
+    // Mapeo de nuevos campos técnicos:
+    BraceletMaterial: raw.BraceletMaterial ?? raw.braceletMaterial ?? "",
+    cristal: raw.cristal ?? "",
+    resistencia_agua: raw.resistencia_agua ?? "",
+    color_esfera: raw.color_esfera ?? "",
+    bisel: raw.bisel ?? "",
+    tienda: raw.tienda ?? "",
     galeria: mapGallery(raw.galeria),
   };
 }
@@ -85,7 +99,7 @@ function buildSearchParams(search: string): Record<string, string> {
   );
 }
 
-// --- EXPORT: getWatches ---
+// --- EXPORT: getWatches (Catálogo y Home) ---
 export async function getWatches(search = "", brand = "", featuredOnly = false): Promise<Watch[]> {
   try {
     const params: Record<string, any> = {
@@ -93,17 +107,9 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
       "pagination[pageSize]": featuredOnly ? 8 : 100,
     };
 
-    if (featuredOnly) {
-      params["filters[featured][$eq]"] = true;
-    }
-
-    if (brand && brand !== "all") {
-      params["filters[marca][$containsi]"] = brand;
-    }
-
-    if (search.trim()) {
-      Object.assign(params, buildSearchParams(search));
-    }
+    if (featuredOnly) params["filters[featured][$eq]"] = true;
+    if (brand && brand !== "all") params["filters[marca][$containsi]"] = brand;
+    if (search.trim()) Object.assign(params, buildSearchParams(search));
 
     const res = await axios.get(API_URL, { params });
     const items = res.data?.data || [];
@@ -114,7 +120,7 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
   }
 }
 
-// --- EXPORT: getWatchById ---
+// --- EXPORT: getWatchById (VITAL para la página de detalle) ---
 export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
   try {
     const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);

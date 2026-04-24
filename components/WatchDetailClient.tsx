@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/utils";
 type Watch = Awaited<ReturnType<typeof getWatchById>>;
 
 const STRAPI_BASE_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+  process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.jjconnections.com";
 
 function normalizeImageUrl(url?: string | null) {
   if (!url || url.trim() === "") return "/images/placeholder-watch.jpg";
