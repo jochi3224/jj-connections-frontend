@@ -26,7 +26,7 @@ export type Watch = {
   galeria?: WatchImage[];
 };
 
-// --- Helpers ---
+// --- Helpers de Mapeo ---
 function normalizeMediaUrl(url?: string | null) {
   if (!url) return null;
   if (url.startsWith("http")) return url;
@@ -63,7 +63,17 @@ function mapWatch(item: any): Watch {
   };
 }
 
-// --- getWatches (Catálogo y Highlights) ---
+// --- Búsqueda Multi-campo (Necesaria para que no falle el catálogo) ---
+function buildSearchParams(search: string): Record<string, string> {
+  if (!search?.trim()) return {};
+  const s = search.trim();
+  const fields = ["nombre", "referencia", "modelo", "marca", "tags"];
+  return Object.fromEntries(
+    fields.map((field, i) => [`filters[$or][${i}][${field}][$containsi]`, s])
+  );
+}
+
+// --- EXPORT: getWatches (Para Catálogo y Home) ---
 export async function getWatches(search = "", brand = "", featuredOnly = false): Promise<Watch[]> {
   try {
     const params: Record<string, any> = {
@@ -79,28 +89,32 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
       params["filters[marca][$containsi]"] = brand;
     }
 
+    if (search.trim()) {
+      Object.assign(params, buildSearchParams(search));
+    }
+
     const res = await axios.get(API_URL, { params });
     const items = res.data?.data || [];
     return items.map(mapWatch).filter((w: Watch) => w.activo !== false);
   } catch (error) {
-    console.error("Error cargando relojes:", error);
+    console.error("Error en getWatches:", error);
     return [];
   }
 }
 
-// --- getWatchById (LA QUE TE DABA ERROR) ---
+// --- EXPORT: getWatchById (VITAL para la página de detalle) ---
 export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
   try {
     const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);
     if (res.data?.data) return mapWatch(res.data.data);
     return null;
   } catch (error) {
-    console.error("Error cargando reloj individual:", error);
+    console.error("Error en getWatchById:", error);
     return null;
   }
 }
 
-// --- getBrandsFromWatches ---
+// --- EXPORT: getBrandsFromWatches ---
 export function getBrandsFromWatches(watches: Watch[]): string[] {
   return Array.from(
     new Set(watches.map((w) => w.marca).filter(Boolean))
