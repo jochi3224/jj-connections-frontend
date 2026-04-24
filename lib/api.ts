@@ -10,6 +10,7 @@ export type WatchImage = {
   alternativeText?: string | null;
 };
 
+// 1. EL MOLDE CORREGIDO: Agregué los campos que te daban error de tipo
 export type Watch = {
   id: number;
   documentId?: string | null;
@@ -23,6 +24,11 @@ export type Watch = {
   moneda?: string | null;
   activo?: boolean | null;
   featured?: boolean | null; 
+  condicion?: string | null;  // <--- Agregado
+  material?: string | null;   // <--- Agregado
+  diametro?: string | null;   // <--- Agregado
+  movimiento?: string | null; // <--- Agregado
+  tags?: string | null;       // <--- Agregado
   galeria?: WatchImage[];
 };
 
@@ -44,6 +50,7 @@ function mapGallery(item: any): WatchImage[] {
     .filter((img: WatchImage) => !!img.url);
 }
 
+// 2. EL TRADUCTOR CORREGIDO: Aquí le decimos a Strapi qué datos meter en cada campo
 function mapWatch(item: any): Watch {
   const raw = item?.attributes ? { id: item.id, ...item.attributes } : item;
   return {
@@ -59,11 +66,16 @@ function mapWatch(item: any): Watch {
     moneda: raw.moneda ?? "USD",
     activo: raw.activo ?? true,
     featured: !!raw.featured,
+    condicion: raw.condicion ?? "",   // <--- Mapeado
+    material: raw.material ?? "",     // <--- Mapeado
+    diametro: raw.diametro ?? "",     // <--- Mapeado
+    movimiento: raw.movimiento ?? "", // <--- Mapeado
+    tags: raw.tags ?? "",             // <--- Mapeado
     galeria: mapGallery(raw.galeria),
   };
 }
 
-// --- Búsqueda Multi-campo (Necesaria para que no falle el catálogo) ---
+// --- Búsqueda Multi-campo ---
 function buildSearchParams(search: string): Record<string, string> {
   if (!search?.trim()) return {};
   const s = search.trim();
@@ -73,7 +85,7 @@ function buildSearchParams(search: string): Record<string, string> {
   );
 }
 
-// --- EXPORT: getWatches (Para Catálogo y Home) ---
+// --- EXPORT: getWatches ---
 export async function getWatches(search = "", brand = "", featuredOnly = false): Promise<Watch[]> {
   try {
     const params: Record<string, any> = {
@@ -102,7 +114,7 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
   }
 }
 
-// --- EXPORT: getWatchById (VITAL para la página de detalle) ---
+// --- EXPORT: getWatchById ---
 export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
   try {
     const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);
