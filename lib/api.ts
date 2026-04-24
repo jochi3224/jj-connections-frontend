@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const STRAPI_BASE_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.jjconnections.com"; // Asegúrate de usar https
+  process.env.NEXT_PUBLIC_STRAPI_URL || "https://api.jjconnections.com";
 
 const API_URL = `${STRAPI_BASE_URL}/api/watches`;
 
@@ -22,7 +22,7 @@ export type Watch = {
   referencia?: string | null;
   moneda?: string | null;
   activo?: boolean | null;
-  featured?: boolean | null; // <--- AGREGADO
+  featured?: boolean | null; 
   galeria?: WatchImage[];
 };
 
@@ -58,12 +58,12 @@ function mapWatch(item: any): Watch {
     referencia: raw.referencia ?? "",
     moneda: raw.moneda ?? "USD",
     activo: raw.activo ?? true,
-    featured: !!raw.featured, // <--- MAPEO AGREGADO
+    featured: !!raw.featured,
     galeria: mapGallery(raw.galeria),
   };
 }
 
-// --- getWatches (CORREGIDO) ---
+// --- getWatches (Catálogo y Highlights) ---
 export async function getWatches(search = "", brand = "", featuredOnly = false): Promise<Watch[]> {
   try {
     const params: Record<string, any> = {
@@ -71,7 +71,6 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
       "pagination[pageSize]": featuredOnly ? 8 : 100,
     };
 
-    // Si pedimos solo destacados, aplicamos el filtro de Strapi
     if (featuredOnly) {
       params["filters[featured][$eq]"] = true;
     }
@@ -87,4 +86,23 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
     console.error("Error cargando relojes:", error);
     return [];
   }
+}
+
+// --- getWatchById (LA QUE TE DABA ERROR) ---
+export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
+  try {
+    const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);
+    if (res.data?.data) return mapWatch(res.data.data);
+    return null;
+  } catch (error) {
+    console.error("Error cargando reloj individual:", error);
+    return null;
+  }
+}
+
+// --- getBrandsFromWatches ---
+export function getBrandsFromWatches(watches: Watch[]): string[] {
+  return Array.from(
+    new Set(watches.map((w) => w.marca).filter(Boolean))
+  ).sort() as string[];
 }
