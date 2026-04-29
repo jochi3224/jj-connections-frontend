@@ -179,7 +179,7 @@ export default function ServicesPage() {
                   className="gold-button w-full text-center lg:w-auto">
                   Start Conversation
                 </a>
-                <a href="mailto:jjconnections@gmail.com"
+                <a href="mailto:info@jjconnections.com"
                   className="outline-button w-full text-center lg:w-auto">
                   Email Us
                 </a>

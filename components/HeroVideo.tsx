@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
-// ─── Live watch dial SVG ──────────────────────────────────────────────────────
 function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: number }) {
   const hourRef = useRef<SVGLineElement | null>(null);
   const minuteRef = useRef<SVGLineElement | null>(null);
@@ -17,13 +16,14 @@ function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: nu
       const s = now.getSeconds();
       const ms = now.getMilliseconds();
 
-      const hDeg = (h / 12) * 360 + (m / 60) * 30;
-      const mDeg = (m / 60) * 360 + (s / 60) * 6;
-      const sDeg = (s / 60) * 360 + (ms / 1000) * 6;
+      if (hourRef.current)
+        hourRef.current.style.transform = `rotate(${(h / 12) * 360 + (m / 60) * 30}deg)`;
 
-      if (hourRef.current) hourRef.current.style.transform = `rotate(${hDeg}deg)`;
-      if (minuteRef.current) minuteRef.current.style.transform = `rotate(${mDeg}deg)`;
-      if (secondRef.current) secondRef.current.style.transform = `rotate(${sDeg}deg)`;
+      if (minuteRef.current)
+        minuteRef.current.style.transform = `rotate(${(m / 60) * 360 + (s / 60) * 6}deg)`;
+
+      if (secondRef.current)
+        secondRef.current.style.transform = `rotate(${(s / 60) * 360 + (ms / 1000) * 6}deg)`;
     };
 
     tick();
@@ -44,38 +44,17 @@ function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: nu
       {Array.from({ length: 60 }).map((_, i) => {
         const a = (i / 60) * Math.PI * 2 - Math.PI / 2;
         const isHour = i % 5 === 0;
-        const r1 = r - 2;
-        const r2 = isHour ? r - 22 : r - 12;
 
         return (
           <line
             key={i}
-            x1={cx + Math.cos(a) * r1}
-            y1={cy + Math.sin(a) * r1}
-            x2={cx + Math.cos(a) * r2}
-            y2={cy + Math.sin(a) * r2}
+            x1={cx + Math.cos(a) * (r - 2)}
+            y1={cy + Math.sin(a) * (r - 2)}
+            x2={cx + Math.cos(a) * (isHour ? r - 22 : r - 12)}
+            y2={cy + Math.sin(a) * (isHour ? r - 22 : r - 12)}
             stroke={isHour ? "rgba(180,128,44,1)" : "rgba(180,128,44,0.52)"}
             strokeWidth={isHour ? "2" : "0.8"}
           />
-        );
-      })}
-
-      {["XII", "III", "VI", "IX"].map((label, i) => {
-        const a = (i / 4) * Math.PI * 2 - Math.PI / 2;
-        return (
-          <text
-            key={label}
-            x={cx + Math.cos(a) * (r - 42)}
-            y={cy + Math.sin(a) * (r - 42)}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fill="rgba(180,128,44,0.85)"
-            fontSize={Math.max(9, size * 0.028)}
-            fontFamily="Georgia, serif"
-            letterSpacing="0.04em"
-          >
-            {label}
-          </text>
         );
       })}
 
@@ -90,6 +69,7 @@ function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: nu
         strokeLinecap="round"
         style={{ transformOrigin: `${cx}px ${cy}px`, transition: "transform 0.5s ease" }}
       />
+
       <line
         ref={minuteRef}
         x1={cx}
@@ -101,6 +81,7 @@ function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: nu
         strokeLinecap="round"
         style={{ transformOrigin: `${cx}px ${cy}px`, transition: "transform 0.2s ease" }}
       />
+
       <line
         ref={secondRef}
         x1={cx}
@@ -119,7 +100,6 @@ function WatchDial({ size = 400, opacity = 0.22 }: { size?: number; opacity?: nu
   );
 }
 
-// ─── Animated counter ─────────────────────────────────────────────────────────
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLSpanElement | null>(null);
@@ -130,8 +110,8 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
     if (!el) return;
 
     const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !done.current) {
+      ([entry]) => {
+        if (entry.isIntersecting && !done.current) {
           done.current = true;
           let i = 0;
           const id = setInterval(() => {
@@ -156,7 +136,6 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   );
 }
 
-// ─── Floating badge ───────────────────────────────────────────────────────────
 function FloatingBadge({
   label,
   value,
@@ -188,7 +167,6 @@ function FloatingBadge({
   );
 }
 
-// ─── Main Hero ────────────────────────────────────────────────────────────────
 export default function HeroVideo() {
   const [mouse, setMouse] = useState({ x: 50, y: 50 });
   const [mounted, setMounted] = useState(false);
@@ -226,8 +204,6 @@ export default function HeroVideo() {
       })),
     [isMobile]
   );
-
-
 
   return (
     <section
@@ -270,19 +246,16 @@ export default function HeroVideo() {
         .hero-shimmer { animation: shimmerSweep 5.8s ease-in-out 1.2s infinite; }
       `}</style>
 
-      {/* ── Video bg ── */}
       <div className="absolute inset-0">
         <video className="h-full w-full object-cover opacity-[0.10] md:opacity-[0.14]" autoPlay muted loop playsInline>
           <source src="/video/hero-watch.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* ── Gradients — lado derecho (reloj) aclarado para mayor visibilidad ── */}
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(9,10,12,0.95)_0%,rgba(9,10,12,0.55)_48%,rgba(9,10,12,0.65)_100%)] md:bg-[linear-gradient(135deg,rgba(9,10,12,0.92)_0%,rgba(9,10,12,0.40)_48%,rgba(9,10,12,0.55)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_70%_35%,rgba(180,128,44,0.12),transparent_68%)] md:bg-[radial-gradient(ellipse_55%_65%_at_70%_42%,rgba(180,128,44,0.16),transparent_65%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_45%_at_10%_72%,rgba(248,224,124,0.04),transparent_60%)] md:bg-[radial-gradient(ellipse_45%_45%_at_10%_72%,rgba(248,224,124,0.05),transparent_60%)]" />
 
-      {/* ── Particles ── */}
       {mounted && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           {particles.map((p) => {
@@ -310,7 +283,6 @@ export default function HeroVideo() {
         </div>
       )}
 
-      {/* ── Left tick marks (desktop only) ── */}
       <div className="pointer-events-none absolute left-0 top-1/2 hidden -translate-y-1/2 flex-col gap-[3px] pl-1 md:flex">
         {Array.from({ length: 28 }).map((_, i) => (
           <div
@@ -326,7 +298,6 @@ export default function HeroVideo() {
       </div>
 
       <div className="container-luxury relative flex flex-col pt-20 pb-14 lg:grid lg:min-h-[100svh] lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:py-28">
-        {/* ════ WATCH VISUAL ════ */}
         <div
           className="relative order-1 flex items-center justify-center lg:order-2"
           style={{
@@ -337,35 +308,20 @@ export default function HeroVideo() {
             transition: "opacity 1.2s ease 0.2s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s",
           }}
         >
-          {/* Glow blobs */}
           <div className="absolute h-[220px] w-[220px] rounded-full bg-[rgba(180,128,44,0.16)] blur-3xl sm:h-[300px] sm:w-[300px] lg:h-[440px] lg:w-[440px]" />
           <div className="absolute h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(248,224,124,0.06),transparent_55%)] blur-3xl sm:h-[440px] sm:w-[440px] lg:h-[620px] lg:w-[620px]" />
 
-          {/* Dial background desktop/tablet */}
-          <div
-            className="absolute inset-0 hidden items-center justify-center md:flex"
-            style={{ opacity: dialVisible ? 1 : 0, transition: "opacity 1.5s ease" }}
-          >
+          <div className="absolute inset-0 hidden items-center justify-center md:flex" style={{ opacity: dialVisible ? 1 : 0, transition: "opacity 1.5s ease" }}>
             <WatchDial size={420} opacity={0.22} />
           </div>
 
-          {/* 3D watch */}
-          <div
-            className="relative z-10"
-            style={{
-              transform: "none",
-              transformStyle: "preserve-3d",
-            }}
-          >
-            {/* Scan line */}
+          <div className="relative z-10" style={{ transform: "none", transformStyle: "preserve-3d" }}>
             {!isMobile && (
               <div className="scan-line-hero pointer-events-none absolute left-0 right-0 z-30 h-[1.5px] bg-gradient-to-r from-transparent via-[rgba(180,128,44,0.7)] to-transparent" />
             )}
 
-            {/* Shimmer */}
             <div className="hero-shimmer pointer-events-none absolute inset-y-0 left-[-20%] z-20 w-[40%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent)] blur-[2px]" />
 
-            {/* Light reflection */}
             <div
               className="pointer-events-none absolute inset-0 z-20 rounded-full"
               style={{
@@ -376,70 +332,28 @@ export default function HeroVideo() {
               }}
             />
 
-            {/* Watch — animación flotante eliminada */}
             <img
               src="/img/rolex-hero.png"
               alt="Luxury watch"
               className="relative z-10 mx-auto w-full max-w-[220px] drop-shadow-[0_24px_44px_rgba(0,0,0,0.72)] sm:max-w-[300px] lg:max-w-[460px]"
             />
 
-            {/* Depth rings desktop only */}
             {!isMobile && (
               <>
-                <div
-                  className="absolute -inset-5 rounded-full border border-[rgba(180,128,44,0.12)]"
-                  style={{ transform: "translateZ(-16px)" }}
-                />
-                <div
-                  className="absolute -inset-12 rounded-full border border-[rgba(180,128,44,0.06)]"
-                  style={{ transform: "translateZ(-32px)" }}
-                />
+                <div className="absolute -inset-5 rounded-full border border-[rgba(180,128,44,0.12)]" style={{ transform: "translateZ(-16px)" }} />
+                <div className="absolute -inset-12 rounded-full border border-[rgba(180,128,44,0.06)]" style={{ transform: "translateZ(-32px)" }} />
               </>
             )}
           </div>
 
-          {/* Pulse ring */}
           <div className="pulse-ring-hero pointer-events-none absolute left-1/2 top-1/2 h-[150px] w-[150px] rounded-full border border-[rgba(180,128,44,0.20)] sm:h-[210px] sm:w-[210px] lg:h-[300px] lg:w-[300px]" />
 
-          {/* Desktop badges */}
           <div className="hidden lg:block">
-            <FloatingBadge
-              label="Certified"
-              value="100% Authentic"
-              visible={dialVisible}
-              delay="1.1s"
-              style={{ top: "10%", right: "-2%", zIndex: 30 }}
-            />
-            <FloatingBadge
-              label="Orlando, FL"
-              value="Private Consultation"
-              visible={dialVisible}
-              delay="1.35s"
-              style={{ bottom: "12%", left: "-2%", zIndex: 30 }}
-            />
-          </div>
-
-          {/* Mobile live clock badge */}
-          <div
-            className="absolute -bottom-4 left-1/2 z-30 -translate-x-1/2 flex items-center gap-3 rounded-2xl border border-[rgba(180,128,44,0.22)] bg-[rgba(9,10,12,0.92)] px-3.5 py-2 backdrop-blur-md lg:hidden"
-            style={{
-              opacity: dialVisible ? 1 : 0,
-              transition: "opacity 0.7s ease 1.6s",
-              whiteSpace: "nowrap",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-            }}
-          >
-            <div style={{ width: 28, height: 28, flexShrink: 0 }}>
-              <WatchDial size={28} opacity={1} />
-            </div>
-            <div>
-              <p className="text-[0.5rem] font-bold uppercase tracking-[0.2em] text-[var(--gold)]">Live Time</p>
-              <p className="text-[0.62rem] font-semibold text-[var(--text)]">JJ Connections</p>
-            </div>
+            <FloatingBadge label="Certified" value="100% Authentic" visible={dialVisible} delay="1.1s" style={{ top: "10%", right: "-2%", zIndex: 30 }} />
+            <FloatingBadge label="Orlando, FL" value="Private Consultation" visible={dialVisible} delay="1.35s" style={{ bottom: "12%", left: "-2%", zIndex: 30 }} />
           </div>
         </div>
 
-        {/* ════ TEXT ════ */}
         <div
           className="order-2 mt-10 flex flex-col lg:order-1 lg:mt-0"
           style={{
@@ -448,15 +362,6 @@ export default function HeroVideo() {
             transition: "opacity 1.1s ease 0.1s, transform 1.1s cubic-bezier(0.16,1,0.3,1) 0.1s",
           }}
         >
-          <div
-            className="mb-4 flex items-center gap-3"
-            style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.15s" }}
-          >
-            <div className="h-px w-5 bg-[var(--gold)] opacity-65" />
-            <p className="section-kicker">JJ Connections</p>
-            <div className="h-px w-5 bg-[var(--gold)] opacity-30" />
-          </div>
-
           <h1
             className="text-[1.8rem] font-semibold leading-[1.08] text-[var(--text)] sm:text-5xl xl:text-[3.4rem]"
             style={{
@@ -466,7 +371,7 @@ export default function HeroVideo() {
               transition: "opacity 0.9s ease 0.2s",
             }}
           >
-            Buying, selling &amp;
+            Buying, selling &
             <br className="hidden sm:block" />
             trading luxury watches
             <br />
@@ -487,13 +392,10 @@ export default function HeroVideo() {
             style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.4s" }}
           >
             At JJ Connections, we are passionate about watches and dedicated to a
-            seamless experience — whether buying, selling, or trading with confidence.
+            seamless experience whether buying, selling, or trading with confidence.
           </p>
 
-          <div
-            className="mt-5 flex flex-wrap gap-2"
-            style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.55s" }}
-          >
+          <div className="mt-5 flex flex-wrap gap-2" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.55s" }}>
             {["✦ Authenticated", "✦ Transparent Pricing", "✦ Concierge Service"].map((t) => (
               <span
                 key={t}
@@ -504,43 +406,13 @@ export default function HeroVideo() {
             ))}
           </div>
 
-          <div
-            className="mt-7 flex flex-col gap-3 sm:flex-row"
-            style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.65s" }}
-          >
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.65s" }}>
             <Link href="/catalogo" className="gold-button inline-flex items-center justify-center gap-2 text-sm">
-              <svg
-                width="13"
-                height="13"
-                viewBox="0 0 14 14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="1" y="1" width="5" height="5" rx="0.5" />
-                <rect x="8" y="1" width="5" height="5" rx="0.5" />
-                <rect x="1" y="8" width="5" height="5" rx="0.5" />
-                <rect x="8" y="8" width="5" height="5" rx="0.5" />
-              </svg>
               View Catalog
             </Link>
 
             <Link href="/services" className="outline-button inline-flex items-center justify-center gap-2 text-sm">
               Our Services
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 14 14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M2 7h10M7 2l5 5-5 5" />
-              </svg>
             </Link>
           </div>
 
@@ -561,10 +433,7 @@ export default function HeroVideo() {
                   background: i === 1 ? "rgba(180,128,44,0.04)" : "transparent",
                 }}
               >
-                <span
-                  className="text-xl font-bold text-[var(--gold-soft)] sm:text-2xl"
-                  style={{ fontFamily: "'Georgia', serif" }}
-                >
+                <span className="text-xl font-bold text-[var(--gold-soft)] sm:text-2xl" style={{ fontFamily: "'Georgia', serif" }}>
                   <Counter to={s.value} suffix={s.suffix} />
                 </span>
                 <span className="mt-0.5 text-[0.57rem] uppercase tracking-[0.16em] text-[var(--muted)] opacity-60">
@@ -573,30 +442,10 @@ export default function HeroVideo() {
               </div>
             ))}
           </div>
-
-          <div
-            className="mt-6 flex items-center gap-[3px]"
-            style={{ opacity: entered ? 0.45 : 0, transition: "opacity 0.8s ease 1s" }}
-          >
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div
-                key={i}
-                className="bg-[var(--gold)]"
-                style={{
-                  width: 1,
-                  height: i % 4 === 0 ? 12 : 6,
-                  opacity: i % 4 === 0 ? 0.55 : 0.15,
-                }}
-              />
-            ))}
-          </div>
         </div>
       </div>
 
-      <div
-        className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 sm:flex"
-        style={{ opacity: dialVisible ? 1 : 0, transition: "opacity 0.7s ease 2.2s" }}
-      >
+      <div className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 sm:flex" style={{ opacity: dialVisible ? 1 : 0, transition: "opacity 0.7s ease 2.2s" }}>
         <div className="scroll-pulse h-8 w-px bg-gradient-to-b from-[var(--gold)] to-transparent" />
         <p className="text-[0.56rem] uppercase tracking-[0.24em] text-[var(--gold)] opacity-45">Scroll</p>
       </div>

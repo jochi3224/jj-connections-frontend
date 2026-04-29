@@ -24,10 +24,9 @@ export default function FeaturedCarousel({
       <div className="container-luxury">
         <div className="mb-10">
           <p className="section-kicker mb-3">Featured watches</p>
-          <h2 className="section-title">Selected highlights</h2>
+          <h2 className="section-title">New Arrivals</h2>
           <p className="mt-4 max-w-2xl text-[var(--muted)]">
-            A dynamic showcase of the most recently published pieces from the catalog.
-          </p>
+Recently added pieces from our collection.          </p>
         </div>
 
         <Swiper

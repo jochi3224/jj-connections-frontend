@@ -15,14 +15,15 @@ export default async function Home() {
   return (
     <main>
       <Navbar />
-      <HeroVideo />
+     
       {/* Si hay relojes, mostramos el carrusel, si no, no se ve vacío */}
       {featuredWatches.length > 0 && (
         <FeaturedCarousel watches={featuredWatches} />
       )}
+
       {/* El resto de tus componentes */}
+       <HeroVideo />
       <ScrollWatchShowcase />
-      <AboutSection />
 
       <Footer />
     </main>
