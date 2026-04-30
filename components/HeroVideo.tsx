@@ -362,30 +362,32 @@ export default function HeroVideo() {
             transition: "opacity 1.1s ease 0.1s, transform 1.1s cubic-bezier(0.16,1,0.3,1) 0.1s",
           }}
         >
-          <h1
-            className="text-[1.8rem] font-semibold leading-[1.08] text-[var(--text)] sm:text-5xl xl:text-[3.4rem]"
-            style={{
-              fontFamily: "'Georgia', serif",
-              letterSpacing: "-0.02em",
-              opacity: entered ? 1 : 0,
-              transition: "opacity 0.9s ease 0.2s",
-            }}
-          >
-            Buying, selling    
-            <br className="hidden sm:block" />
-             & trading luxury watches
-            <br />
-            <span className="relative mt-1 inline-block text-[var(--gold)]">
-              made simple and secure.
-              <span
-                className="absolute -bottom-1 left-0 h-[1.5px] bg-gradient-to-r from-[var(--gold)] via-[var(--gold-soft)] to-transparent"
-                style={{
-                  width: entered ? "100%" : "0%",
-                  transition: "width 1.4s cubic-bezier(0.16,1,0.3,1) 1s",
-                }}
-              />
-            </span>
-          </h1>
+  <h1
+  className="text-[1.9rem] font-semibold leading-[1.25] text-[var(--text)] sm:text-5xl xl:text-[3.4rem] md:leading-[1.08]"
+  style={{
+    fontFamily: "'Georgia', serif",
+    letterSpacing: "-0.02em",
+    opacity: entered ? 1 : 0,
+    transition: "opacity 0.9s ease 0.2s",
+  }}
+>
+  Buying, selling
+  <br />
+  <span className="mt-2 block sm:mt-0 sm:inline">
+    <span className="text-[var(--gold-soft)] sm:text-[var(--text)]">&</span> trading luxury watches
+  </span>
+  <br />
+  <span className="relative mt-2 inline-block text-[var(--gold)]">
+    made simple and secure.
+    <span
+      className="absolute -bottom-1 left-0 h-[1.5px] bg-gradient-to-r from-[var(--gold)] via-[var(--gold-soft)] to-transparent"
+      style={{
+        width: entered ? "100%" : "0%",
+        transition: "width 1.4s cubic-bezier(0.16,1,0.3,1) 1s",
+      }}
+    />
+  </span>
+</h1>
 
     
           <div className="mt-5 flex flex-wrap gap-2" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.55s" }}>
