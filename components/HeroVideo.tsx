@@ -371,9 +371,9 @@ export default function HeroVideo() {
               transition: "opacity 0.9s ease 0.2s",
             }}
           >
-            Buying, selling  &  
+            Buying, selling    
             <br className="hidden sm:block" />
-             trading luxury watches
+             & trading luxury watches
             <br />
             <span className="relative mt-1 inline-block text-[var(--gold)]">
               made simple and secure.
