@@ -362,8 +362,8 @@ export default function HeroVideo() {
             transition: "opacity 1.1s ease 0.1s, transform 1.1s cubic-bezier(0.16,1,0.3,1) 0.1s",
           }}
         >
-  <h1
-  className="text-[1.9rem] font-semibold leading-[1.25] text-[var(--text)] sm:text-5xl xl:text-[3.4rem] md:leading-[1.08]"
+<h1
+  className="text-[2rem] font-semibold leading-[1.1] text-[var(--text)] sm:text-5xl xl:text-[3.4rem]"
   style={{
     fontFamily: "'Georgia', serif",
     letterSpacing: "-0.02em",
@@ -373,9 +373,7 @@ export default function HeroVideo() {
 >
   Buying, selling
   <br />
-  <span className="mt-2 block sm:mt-0 sm:inline">
-    <span className="text-[var(--gold-soft)] sm:text-[var(--text)]">&</span> trading luxury watches
-  </span>
+  & trading luxury watches
   <br />
   <span className="relative mt-2 inline-block text-[var(--gold)]">
     made simple and secure.
