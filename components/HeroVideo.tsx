@@ -388,16 +388,6 @@ export default function HeroVideo() {
 </h1>
 
     
-          <div className="mt-5 flex flex-wrap gap-2" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.55s" }}>
-            {["✦ Authenticated", "✦ Concierge Service"].map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-[rgba(180,128,44,0.28)] bg-[rgba(180,128,44,0.07)] px-3 py-1.5 text-[0.68rem] text-[var(--gold-soft)] sm:px-3.5 sm:text-[0.72rem]"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.65s" }}>
             <Link href="/catalogo" className="gold-button inline-flex items-center justify-center gap-2 text-sm">
