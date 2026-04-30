@@ -371,9 +371,9 @@ export default function HeroVideo() {
               transition: "opacity 0.9s ease 0.2s",
             }}
           >
-            Buying, selling &
+            Buying, selling  &  
             <br className="hidden sm:block" />
-            trading luxury watches
+             trading luxury watches
             <br />
             <span className="relative mt-1 inline-block text-[var(--gold)]">
               made simple and secure.
@@ -387,16 +387,9 @@ export default function HeroVideo() {
             </span>
           </h1>
 
-          <p
-            className="mt-5 max-w-xl text-[0.92rem] leading-[1.8] text-[var(--muted)] sm:text-[1.05rem]"
-            style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.4s" }}
-          >
-            At JJ Connections, we are passionate about watches and dedicated to a
-            seamless experience whether buying, selling, or trading with confidence.
-          </p>
-
+    
           <div className="mt-5 flex flex-wrap gap-2" style={{ opacity: entered ? 1 : 0, transition: "opacity 0.8s ease 0.55s" }}>
-            {["✦ Authenticated", "✦ Transparent Pricing", "✦ Concierge Service"].map((t) => (
+            {["✦ Authenticated", "✦ Concierge Service"].map((t) => (
               <span
                 key={t}
                 className="rounded-full border border-[rgba(180,128,44,0.28)] bg-[rgba(180,128,44,0.07)] px-3 py-1.5 text-[0.68rem] text-[var(--gold-soft)] sm:px-3.5 sm:text-[0.72rem]"

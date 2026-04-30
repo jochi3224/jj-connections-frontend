@@ -120,7 +120,7 @@ export default function ScrollWatchShowcase() {
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-[#888C95] md:text-lg md:leading-8">
             JJ Connections is built around presentation, selection, and client
-            confidence — making every step feel cleaner, more personal, and
+            confidence  making every step feel cleaner, more personal, and
             more professional.
           </p>
         </div>
@@ -208,13 +208,6 @@ export default function ScrollWatchShowcase() {
             >
               Centered on trust, presentation, and discretion.
             </h3>
-
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#7D838D] sm:text-base sm:leading-8">
-              Every timepiece deserves a cleaner presentation and every client
-              deserves a smoother process. JJ Connections is designed to make
-              the watch experience feel more refined from the first message to
-              the final delivery.
-            </p>
 
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <a
