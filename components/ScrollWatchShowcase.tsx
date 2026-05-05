@@ -189,7 +189,7 @@ export default function ScrollWatchShowcase() {
             <img
               src="/showcase/watch-center.png"
               alt="JJ Connections featured watch"
-              className="center-watch-anim w-[280px] object-contain drop-shadow-[0_26px_80px_rgba(0,0,0,0.72)] sm:w-[260px] md:w-[310px] lg:w-[400px]"
+              className="center-watch-anim w-[350px] object-contain drop-shadow-[0_26px_80px_rgba(0,0,0,0.72)] sm:w-[360px] md:w-[400px] lg:w-[500px]"
             />
           </div>
 
