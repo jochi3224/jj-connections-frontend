@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Watch } from "@/lib/api";
 import { formatPrice } from "@/lib/utils";
@@ -10,12 +11,22 @@ type FeaturedCarouselProps = {
   watches: Watch[];
 };
 
-export default function FeaturedCarousel({
-  watches,
-}: FeaturedCarouselProps) {
-  const featured = [...watches]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 8);
+export default function FeaturedCarousel({ watches }: FeaturedCarouselProps) {
+  // 1. Filtrar los relojes válidos de forma determinista para el Servidor
+  const getFilteredWatches = (data: Watch[]) =>
+    (data || []).filter(w => w.featured === true || w.featured === null);
+
+  // 2. El estado inicial DEBE ser idéntico en el servidor y en el cliente (sin Math.random)
+  const [featured, setFeatured] = useState<Watch[]>(() => 
+    getFilteredWatches(watches).slice(0, 100)
+  );
+
+  // 3. Una vez montado de forma segura en el cliente, aplicamos el orden aleatorio
+  useEffect(() => {
+    const baseWatches = getFilteredWatches(watches);
+    const shuffled = [...baseWatches].sort(() => Math.random() - 0.5).slice(0, 100);
+    setFeatured(shuffled);
+  }, [watches]);
 
   const canLoop = featured.length >= 5;
 
@@ -26,7 +37,8 @@ export default function FeaturedCarousel({
           <p className="section-kicker mb-3">Featured watches</p>
           <h2 className="section-title">New Arrivals</h2>
           <p className="mt-4 max-w-2xl text-[var(--muted)]">
-Recently added pieces from our collection.          </p>
+            Recently added pieces from our collection.
+          </p>
         </div>
 
         <Swiper

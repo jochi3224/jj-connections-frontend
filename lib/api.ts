@@ -10,7 +10,7 @@ export type WatchImage = {
   alternativeText?: string | null;
 };
 
-// 1. EL MOLDE TOTAL: Agregamos todos los campos que usa tu componente de detalle
+// 1. EL MOLDE TOTAL
 export type Watch = {
   id: number;
   documentId?: string | null;
@@ -29,7 +29,6 @@ export type Watch = {
   diametro?: string | null;
   movimiento?: string | null;
   tags?: string | null;
-  // Campos técnicos detectados en tu componente:
   BraceletMaterial?: string | null;
   cristal?: string | null;
   resistencia_agua?: string | null;
@@ -57,7 +56,7 @@ function mapGallery(item: any): WatchImage[] {
     .filter((img: WatchImage) => !!img.url);
 }
 
-// 2. EL TRADUCTOR: Conectamos los datos de Strapi con el molde de arriba
+// 2. EL TRADUCTOR (CORREGIDO)
 function mapWatch(item: any): Watch {
   const raw = item?.attributes ? { id: item.id, ...item.attributes } : item;
   return {
@@ -72,13 +71,13 @@ function mapWatch(item: any): Watch {
     referencia: raw.referencia ?? "",
     moneda: raw.moneda ?? "USD",
     activo: raw.activo ?? true,
-    featured: !!raw.featured,
+    // CORRECCIÓN: Quitamos el '!!' para permitir leer 'null' y no forzarlo a 'false'
+    featured: raw.featured ?? null, 
     condicion: raw.condicion ?? "",
     material: raw.material ?? "",
     diametro: raw.diametro ?? "",
     movimiento: raw.movimiento ?? "",
     tags: raw.tags ?? "",
-    // Mapeo de nuevos campos técnicos:
     BraceletMaterial: raw.BraceletMaterial ?? raw.braceletMaterial ?? "",
     cristal: raw.cristal ?? "",
     resistencia_agua: raw.resistencia_agua ?? "",
@@ -99,12 +98,13 @@ function buildSearchParams(search: string): Record<string, string> {
   );
 }
 
-// --- EXPORT: getWatches (Catálogo y Home) ---
+// --- EXPORT: getWatches (CORREGIDO) ---
 export async function getWatches(search = "", brand = "", featuredOnly = false): Promise<Watch[]> {
   try {
     const params: Record<string, any> = {
       "populate": "*",
-      "pagination[pageSize]": featuredOnly ? 8 : 100,
+      // CORRECCIÓN: Cambiado de 8 a 20 para traer más destacados si viene de la Home
+      "pagination[pageSize]": featuredOnly ? 20 : 100, 
     };
 
     if (featuredOnly) params["filters[featured][$eq]"] = true;
@@ -120,7 +120,7 @@ export async function getWatches(search = "", brand = "", featuredOnly = false):
   }
 }
 
-// --- EXPORT: getWatchById (VITAL para la página de detalle) ---
+// --- EXPORT: getWatchById ---
 export async function getWatchById(idOrDocumentId: string): Promise<Watch | null> {
   try {
     const res = await axios.get(`${API_URL}/${idOrDocumentId}?populate=*`);
