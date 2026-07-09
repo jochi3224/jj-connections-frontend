@@ -335,7 +335,7 @@ export default function HeroVideo() {
             <img
               src="/img/rolex-hero.png"
               alt="Luxury watch"
-              className="relative z-10 mx-auto w-full max-w-[350px] drop-shadow-[0_24px_44px_rgba(0,0,0,0.72)] sm:max-w-[360px] lg:max-w-[550px]"
+              className="relative z-10 mx-auto w-full max-w-[350px] drop-shadow-[0_24px_44px_rgba(0,0,0,0.72)] sm:max-w-[360px] lg:max-w-[600px]"
             />
 
             {!isMobile && (
