@@ -69,8 +69,12 @@ export default function ScrollWatchShowcase() {
           50% { transform: translateY(-10px) rotate(0.8deg); }
         }
         @keyframes glowPulse {
-          0%, 100% { opacity: 0.42; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 0.72; transform: translate(-50%, -50%) scale(1.06); }
+          0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+        @keyframes glowPulseTight {
+          0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(0.96); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
         }
         @keyframes ringRotate {
           0% { transform: translate(-50%, -50%) rotate(0deg); }
@@ -81,6 +85,9 @@ export default function ScrollWatchShowcase() {
         }
         .glow-ring {
           animation: glowPulse 4.2s ease-in-out infinite;
+        }
+        .glow-ring-tight {
+          animation: glowPulseTight 3.2s ease-in-out infinite;
         }
         .orbit-ring {
           animation: ringRotate 28s linear infinite;
@@ -134,14 +141,37 @@ export default function ScrollWatchShowcase() {
             transition: "opacity 1s ease 0.1s, transform 1s ease 0.1s",
           }}
         >
-          {/* Glow core */}
+          {/* Wide ambient glow */}
           <div
             className="glow-ring pointer-events-none absolute left-1/2 top-1/2 rounded-full"
             style={{
               width: "clamp(220px, 52vw, 420px)",
               height: "clamp(220px, 52vw, 420px)",
               background:
-                "radial-gradient(circle, rgba(180,128,44,0.28) 0%, rgba(180,128,44,0.10) 48%, transparent 72%)",
+                "radial-gradient(circle, rgba(180,128,44,0.55) 0%, rgba(180,128,44,0.22) 48%, transparent 72%)",
+              filter: "blur(1px)",
+            }}
+          />
+
+          {/* Tight bright glow hugging the watch */}
+          <div
+            className="glow-ring-tight pointer-events-none absolute left-1/2 top-1/2 rounded-full"
+            style={{
+              width: "clamp(160px, 38vw, 320px)",
+              height: "clamp(160px, 38vw, 320px)",
+              background:
+                "radial-gradient(circle, rgba(248,224,124,0.65) 0%, rgba(180,128,44,0.32) 45%, transparent 70%)",
+            }}
+          />
+
+          {/* Extra bright core hugging the case */}
+          <div
+            className="glow-ring-tight pointer-events-none absolute left-1/2 top-1/2 rounded-full"
+            style={{
+              width: "clamp(100px, 24vw, 220px)",
+              height: "clamp(100px, 24vw, 220px)",
+              background:
+                "radial-gradient(circle, rgba(255,238,180,0.75) 0%, rgba(248,224,124,0.30) 55%, transparent 75%)",
             }}
           />
 
@@ -189,12 +219,16 @@ export default function ScrollWatchShowcase() {
             <img
               src="/showcase/watch-center.png"
               alt="JJ Connections featured watch"
-              className="center-watch-anim w-[350px] object-contain drop-shadow-[0_26px_80px_rgba(0,0,0,0.72)] sm:w-[360px] md:w-[400px] lg:w-[600px]"
+              className="center-watch-anim w-[350px] object-contain sm:w-[360px] md:w-[400px] lg:w-[600px]"
+              style={{
+                filter:
+                  "drop-shadow(0 26px 80px rgba(0,0,0,0.72)) drop-shadow(0 0 55px rgba(248,224,124,0.55)) drop-shadow(0 0 20px rgba(255,238,180,0.6))",
+              }}
             />
           </div>
 
           {/* Bottom text block */}
-          <div 
+          <div
             className="relative z-10 mt-10 max-w-3xl text-center"
             style={{
               opacity: visible ? 1 : 0,
